@@ -29,4 +29,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 =======
 =======
 ### Spring Boot - Angular - Ecommerce
->>>>>>> 848435dfb9fecf850ac880572064299c70818b38
