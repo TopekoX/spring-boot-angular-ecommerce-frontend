@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Backend Project
 
-The Beckend Project Repository is [https://github.com/TopekoX/spring-boot-angular-ecommerce-backend](https://github.com/TopekoX/spring-boot-angular-ecommerce-backend).
+The Beckend Project Repository at [https://github.com/TopekoX/spring-boot-angular-ecommerce-backend](https://github.com/TopekoX/spring-boot-angular-ecommerce-backend).
 
 ## Development server
 
