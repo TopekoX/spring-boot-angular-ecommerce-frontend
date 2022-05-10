@@ -9,7 +9,7 @@ import { ProductCategory } from '../common/product-category';
   providedIn: 'root'
 })
 export class ProductService {
- 
+
   // http://localhost:8080/api/products?size=100  <-- to show view data length
   private baseUrl = 'http://localhost:8080/api/products';
 
@@ -19,18 +19,18 @@ export class ProductService {
   }
 
   getProductListPaginate(thePage: number,
-                         thePageSize: number,
-                         theCategoryId: number): Observable<GetResponseProducts> {
-    
+    thePageSize: number,
+    theCategoryId: number): Observable<GetResponseProducts> {
+
     // build URL by category id
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
-                       + `&page=${thePage}&size=${thePageSize}`
+      + `&page=${thePage}&size=${thePageSize}`
 
     return this.httpClient.get<GetResponseProducts>(searchUrl);
   }
 
   getProductList(theCategoryId: number): Observable<Product[]> {
-    
+
     // build URL by category id
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
 
@@ -55,8 +55,19 @@ export class ProductService {
   searchProduct(theKeyWord: string): Observable<Product[]> {
 
     const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyWord}`;
-    
+
     return this.getProducts(searchUrl);
+  }
+
+  searchProductPaginate(thePage: number,
+                        thePageSize: number,
+                        theKeyword: string): Observable<GetResponseProducts> {
+
+    // build URL by keyword
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`
+      + `&page=${thePage}&size=${thePageSize}`
+
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
   }
 
   private getProducts(searchUrl: string): Observable<Product[]> {
