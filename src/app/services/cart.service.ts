@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CartItem } from '../common/cart-item';
+import { Product } from '../common/product';
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +23,12 @@ export class CartService {
     if (this.cartItems.length > 0) {
       // find the item in the cart base on item id
 
-      for (let tempCartItem of this.cartItems) {
-        if (tempCartItem.id == theCartItem.id) {
-          exitingCartItem = tempCartItem;
-          break;
-        }
-      }
+      exitingCartItem = this.cartItems.find(tempCartItem => tempCartItem.id === theCartItem.id)!;
 
-      // check if we found it
-      alreadyExitsInCart = (exitingCartItem != null);
     }
+
+    // check if we found it
+    alreadyExitsInCart = (exitingCartItem != null);
 
     if (alreadyExitsInCart) {
       // increment the quantity
