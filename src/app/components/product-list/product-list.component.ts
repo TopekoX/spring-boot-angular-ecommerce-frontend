@@ -23,7 +23,6 @@ export class ProductListComponent implements OnInit {
   thePageSize: number = 5;
   theTotalElements: number = 0;
   previousCategoryId: number = 1;
-  currentlyCategoryId: number = 1;
 
   previousKeyword!: string;
 
@@ -77,15 +76,15 @@ export class ProductListComponent implements OnInit {
 
     if (hasCategoryId) {
       // get the id value
-      const theId = this.route.snapshot.paramMap.get('id');
-
+      let theId = this.route.snapshot.paramMap.get('id');
+           
       // get the name value
       const theName = this.route.snapshot.paramMap.get('name');
 
       if (theId != null) {
-        // get the "id" param string and convert string to a number use the "+" symbol
+        // get the "id" param string and convert string to a number use the "Number(value) or +value" symbol
         this.currentCategoryId = +theId;
-
+       
         if (theName != null) {
           this.currentCategoryName = theName;
         }
@@ -104,7 +103,7 @@ export class ProductListComponent implements OnInit {
 
     // if we have different category id then previous
     // then set thePageNumber back to 1
-    if (this.previousCategoryId != this.currentlyCategoryId) {
+    if (this.previousCategoryId != this.currentCategoryId) {
       this.thePageNumber = 1;
     }
 
