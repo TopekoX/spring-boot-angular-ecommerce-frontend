@@ -618,7 +618,7 @@ input.au-input.au-input-xl{
 }
 .au-checkbox input{
     position:absolute;
-    opacity:0;
+    /* opacity:0; */
     cursor:pointer
 }
 .au-checkmark{

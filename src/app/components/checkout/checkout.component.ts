@@ -10,6 +10,9 @@ export class CheckoutComponent implements OnInit {
 
   chekoutFormGroup!: FormGroup;
 
+  totalPrice: number = 0;
+  totalQuantity: number = 0;
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -18,6 +21,28 @@ export class CheckoutComponent implements OnInit {
         firstName: [''],
         lastName: [''],
         email: ['']
+      }),
+      shippingAddress: this.formBuilder.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        country: [''],
+        zipCode: ['']
+      }),
+      billingAddress: this.formBuilder.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        country: [''],
+        zipCode: ['']
+      }),
+      creditCard: this.formBuilder.group({
+        cardType: [''],
+        nameOnCard: [''],
+        cardNumber: [''],
+        securityCode: [''],
+        expirationMonth: [''],
+        expirationYear: ['']
       })
     });
   }
@@ -26,6 +51,15 @@ export class CheckoutComponent implements OnInit {
     console.log("Handling the submit button");
     console.log(this.chekoutFormGroup.get('customer')?.value);
     console.log("The email is " + this.chekoutFormGroup.get('customer')?.value.email);
+  }
+
+  copyShippingAddressToBillingAddress(event) {
+    if (event.target.checked) {
+      this.chekoutFormGroup.controls['billingAddress']
+        .setValue(this.chekoutFormGroup.controls['shippingAddress'].value);
+    } else {
+      this.chekoutFormGroup.controls['billingAddress'].reset();
+    }
   }
 
 }
