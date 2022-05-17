@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { data } from 'autoprefixer';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
@@ -30,9 +30,11 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.chekoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: [''],
-        lastName: [''],
-        email: ['']
+        firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+        lastName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+        email: new FormControl('', [Validators.required, Validators.pattern(
+          '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,6}$'
+        )])
       }),
       shippingAddress: this.formBuilder.group({
         street: [''],
@@ -86,8 +88,17 @@ export class CheckoutComponent implements OnInit {
     )
   }
 
+  get firstName() { return this.chekoutFormGroup.get('customer.firstName'); }
+  get lastName() { return this.chekoutFormGroup.get('customer.lastName'); }
+  get email() { return this.chekoutFormGroup.get('customer.email'); }
+
   onSubmit() {
     console.log("Handling the submit button");
+
+    if (this.chekoutFormGroup.invalid) {
+      this.chekoutFormGroup.markAllAsTouched();
+    }
+
     console.log(this.chekoutFormGroup.get('customer')?.value);
     console.log("The email is " + this.chekoutFormGroup.get('customer')?.value.email);
 
