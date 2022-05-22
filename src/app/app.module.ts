@@ -20,36 +20,29 @@ import { LoginStatusComponent } from './components/login-status/login-status.com
 import {
   OKTA_CONFIG,
   OktaAuthModule,
-  OktaCallbackComponent
+  OktaCallbackComponent,
+  OktaAuthGuard
 } from '@okta/okta-angular';
 
-import AppConfig from './config/app-config';
-import { Router } from '@okta/okta-signin-widget/types/packages/@okta/courage-dist/types/CourageForSigninWidget';
-
-const oktaConfig = Object.assign({
-  onAuthRequired: (injector) => {
-    const router = injector.get(Router);
-
-    // redirect to custom login page
-    router.navigate(['/login']);
-  }
-}, AppConfig.oidc);
+import { OktaAuth } from '@okta/okta-auth-js';
+import appConfig from './config/app-config';
 
 // create routes
-const routes: Routes = [
-  {path: 'login/callback', component: OktaCallbackComponent},
-  {path: 'login', component: LoginComponent},
-
+const routes: Routes = [ 
+  { path: 'login/callback', component: OktaCallbackComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'cart-details', component: CartDetailsComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
   { path: 'search/:keyword', component: ProductListComponent },
   { path: 'category/:id/:name', component: ProductListComponent },
   { path: 'category', component: ProductListComponent },
-  { path: 'products', component: ProductListComponent },
+  { path: 'products', component: ProductListComponent },   // , canActivate: [OktaAuthGuard]
   { path: '', redirectTo: '/products', pathMatch: 'full' },
   { path: '**', redirectTo: '/products', pathMatch: 'full' }
 ];
+
+const oktaAuth = new OktaAuth(appConfig.oidc);
 
 @NgModule({
   declarations: [
@@ -72,7 +65,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     OktaAuthModule
   ],
-  providers: [ProductService, {provide: OKTA_CONFIG, useValue: oktaConfig}],
+  providers: [ProductService, {provide: OKTA_CONFIG, useValue: {oktaAuth}}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
