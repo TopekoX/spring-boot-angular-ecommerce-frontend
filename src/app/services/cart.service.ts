@@ -12,7 +12,20 @@ export class CartService {
   totalPrice: Subject<number> = new BehaviorSubject<number>(0);
   totalQuantity: Subject<number> = new BehaviorSubject<number>(0);
 
-  constructor() { }
+  storage: Storage = sessionStorage;
+
+  constructor() {
+    // read data from storage
+    // JSON.parse convert json to object
+    let data = JSON.parse(this.storage.getItem('cartItems')!); // 'cartItems' nama key yang kita beri
+
+    if (data != null) {
+      this.cartItems = data;
+    }
+
+    // compute totals based on the data that is read from storage
+    this.computeCartTotals();
+  }
 
   addToCart(theCartItem: CartItem) {
     // check if we already have the item in our cart
@@ -55,6 +68,14 @@ export class CartService {
     this.totalQuantity.next(totalQuantityValue);
 
     this.logCartData(totalPriceValue, totalQuantityValue);
+
+    // persist cart data
+    this.persistCartItems();
+  }
+
+  persistCartItems() {
+    // JSON.stringify() -> convert object to JSON string
+    this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
   }
 
   logCartData(totalPriceValue: number, totalQuantityValue: number) {
@@ -82,7 +103,7 @@ export class CartService {
   remove(theCartItem: CartItem) {
 
     // get index of item in array
-    const itemIndex = this.cartItems.findIndex( tempCartItem  => tempCartItem.id === theCartItem.id  );
+    const itemIndex = this.cartItems.findIndex(tempCartItem => tempCartItem.id === theCartItem.id);
 
     // if found, remove the item from the array at the given index
     if (itemIndex > -1) {
