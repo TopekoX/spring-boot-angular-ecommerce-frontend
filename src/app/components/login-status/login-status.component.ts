@@ -38,6 +38,7 @@ export class LoginStatusComponent implements OnInit {
   async logout() {
     // terminates the session
     await this.oktaAuth.signOut();
+    this.storage.setItem('userEmail', '');
   }
 
 }
